@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartFin - Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <div class="main-wrapper">
+        <div class="profile-container glass-effect fade-in-up">
+            <div class="profile-avatar">
+                <img src="" alt="Profile" id="profile-image" style="display:none;">
+                <span id="profile-initial" class="profile-initial">A</span>
+            </div>
+            <h2 id="profile-name">User Name</h2>
+            <p id="profile-email">user@example.com</p>
+            <div class="profile-actions">
+                <button class="btn btn-primary" id="edit-profile"><i class="fas fa-edit"></i> Edit Profile</button>
+                <button class="btn btn-secondary" id="change-password"><i class="fas fa-key"></i> Change Password</button>
+                <button class="btn btn-danger" id="logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </div>
+        <!-- Edit Profile Modal -->
+        <div id="edit-profile-modal" class="modal" style="display:none;">
+            <div class="modal-content glass-effect">
+                <span class="close-modal" id="close-edit-profile">&times;</span>
+                <h2>Edit Profile</h2>
+                <form id="edit-profile-form">
+                    <div class="form-group">
+                        <label for="edit-username">Username</label>
+                        <input type="text" id="edit-username" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-email">Email</label>
+                        <input type="email" id="edit-email" class="form-control" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" id="cancel-edit-profile">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Change Password Modal -->
+        <div id="change-password-modal" class="modal" style="display:none;">
+            <div class="modal-content glass-effect">
+                <span class="close-modal" id="close-change-password">&times;</span>
+                <h2>Change Password</h2>
+                <div id="change-password-note" style="display:none; color: #e53e3e; font-weight: 600; margin-bottom: 1.2rem; text-align: center;">Google sign-in does not allow password change.</div>
+                <form id="change-password-form">
+                    <div class="form-group">
+                        <label for="current-password">Current Password</label>
+                        <input type="password" id="current-password" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password">New Password</label>
+                        <input type="password" id="new-password" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-new-password">Confirm New Password</label>
+                        <input type="password" id="confirm-new-password" class="form-control" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" id="cancel-change-password">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <footer>
+            <div class="footer glass-effect">
+                <p>&copy; Developed by Navaneeth</p>
+            </div>
+        </footer>
+    </div>
+    <script>
+        // Load navigation bar
+        fetch('/components/navbar.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('navbar-container').innerHTML = html;
+                const script = document.createElement('script');
+                script.type = 'module';
+                script.src = '/components/navbar.js';
+                document.body.appendChild(script);
+            });
+    </script>
+    <script type="module" src="{{ url_for('static', filename='js/profile.js') }}"></script>
+</body>
+</html> 

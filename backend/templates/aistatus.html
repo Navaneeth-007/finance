@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <title>SmartFin - AI System Status</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/aistatus.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Include -->
+        <!--#include file="../components/sidebar.html" -->
+        <aside class="sidebar glass-effect">
+            <div class="sidebar-header">
+                <div class="brand-logo">
+                    <i class="fas fa-user-shield"></i>
+                    <span>SmartFin Admin</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="../dashboard/dashboard.html" class="nav-item" id="nav-users">
+                    <i class="fas fa-users"></i>
+                    <span>User Management</span>
+                </a>
+                <a href="../ai-status/aistatus.html" class="nav-item" id="nav-ai">
+                    <i class="fas fa-robot"></i>
+                    <span>AI Status</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn btn-secondary w-100">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </aside>
+        <main class="main-content">
+            <header class="content-header glass-effect">
+                <div class="header-left">
+                    <h1>AI System Status</h1>
+                    <p class="welcome-message">Real-time monitoring and diagnostics</p>
+                </div>
+            </header>
+            <div class="dashboard-content">
+                <section class="ai-overview glass-effect">
+                    <div class="section-header">
+                        <h2>System Overview</h2>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric-card glass-effect">
+                            <div class="metric-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="metric-info">
+                                <h3>Model Status</h3>
+                                <p class="metric-value">Active</p>
+                                <p class="metric-detail">Last updated: 2 minutes ago</p>
+                            </div>
+                        </div>
+                        <div class="metric-card glass-effect">
+                            <div class="metric-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <div class="metric-info">
+                                <h3>Response Time</h3>
+                                <p class="metric-value">0.5s</p>
+                                <p class="metric-detail">Average over last hour</p>
+                            </div>
+                        </div>
+                        <div class="metric-card glass-effect">
+                            <div class="metric-icon">
+                                <i class="fas fa-memory"></i>
+                            </div>
+                            <div class="metric-info">
+                                <h3>Memory Usage</h3>
+                                <p class="metric-value">45%</p>
+                                <p class="metric-detail">2.3GB / 5GB</p>
+                            </div>
+                        </div>
+                        <div class="metric-card glass-effect">
+                            <div class="metric-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="metric-info">
+                                <h3>API Status</h3>
+                                <p class="metric-value">Healthy</p>
+                                <p class="metric-detail">99.9% uptime</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="performance-metrics glass-effect">
+                    <div class="section-header">
+                        <h2>Performance Metrics</h2>
+                    </div>
+                    <div class="charts-grid">
+                        <div class="chart-container glass-effect">
+                            <h3>Response Time Trend</h3>
+                            <canvas id="responseTimeChart"></canvas>
+                        </div>
+                        <div class="chart-container glass-effect">
+                            <h3>Memory Usage Trend</h3>
+                            <canvas id="memoryUsageChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <footer>
+                <div class="footer glass-effect">
+                    <p>&copy; Developed by Navaneeth</p>
+                </div>
+            </footer>
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/aistatus.js') }}"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Sample data for Response Time Trend
+        const responseTimeCtx = document.getElementById('responseTimeChart').getContext('2d');
+        new Chart(responseTimeCtx, {
+            type: 'line',
+            data: {
+                labels: ['10:00', '10:10', '10:20', '10:30', '10:40', '10:50', '11:00'],
+                datasets: [{
+                    label: 'Response Time (s)',
+                    data: [0.6, 0.5, 0.55, 0.52, 0.48, 0.51, 0.5],
+                    borderColor: '#6366F1',
+                    backgroundColor: 'rgba(99,102,241,0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#6366F1',
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: { display: false }
+                },
+                scales: {
+                    y: { beginAtZero: true, title: { display: true, text: 'Seconds' } },
+                    x: { title: { display: true, text: 'Time' } }
+                }
+            }
+        });
+
+        // Sample data for Memory Usage Trend
+        const memoryUsageCtx = document.getElementById('memoryUsageChart').getContext('2d');
+        new Chart(memoryUsageCtx, {
+            type: 'line',
+            data: {
+                labels: ['10:00', '10:10', '10:20', '10:30', '10:40', '10:50', '11:00'],
+                datasets: [{
+                    label: 'Memory Usage (%)',
+                    data: [40, 42, 44, 45, 43, 46, 45],
+                    borderColor: '#06B6D4',
+                    backgroundColor: 'rgba(6,182,212,0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#06B6D4',
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: { display: false }
+                },
+                scales: {
+                    y: { beginAtZero: true, title: { display: true, text: 'Percent' } },
+                    x: { title: { display: true, text: 'Time' } }
+                }
+            }
+        });
+
+        var logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', function() {
+                window.location.href = '/admin/login/login.html';
+            });
+        }
+    });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartFin - Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Navigation Bar Container -->
+    <div id="navbar-container"></div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Header -->
+        <div class="header glass-effect">
+            <div class="welcome-section">
+                <h1>Welcome back, <span class="highlight" id="user">Name</span></h1>
+                <p class="subtitle">Here's your financial overview for <span id="current-month"> May 2025</span></p>
+            </div>
+        </div>
+        
+        <!-- Key Stats -->  
+        <div class="stats-grid">
+            <div class="stat-card glass-effect">
+                <div class="stat-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Total Balance</h3>
+                    <p class="stat-value">₹45,678</p>
+                    <p class="stat-change positive">
+                    </p>
+                </div>
+            </div>
+            
+            <div class="stat-card glass-effect">
+                <div class="stat-icon">
+                    <i class="fas fa-arrow-up"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Total Income</h3>
+                    <p class="stat-value">₹32,500</p>
+                </div>
+            </div>
+            
+            <div class="stat-card glass-effect">
+                <div class="stat-icon">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Total Expenses</h3>
+                    <p class="stat-value">₹15,200</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-grid">
+            <div class="chart-container glass-effect">
+                <h3>Overview</h3>
+                <canvas id="overview-chart" width="400" height="240"></canvas>
+            </div>
+            <div class="chart-container glass-effect">
+                <h3>Monthly Breakdown</h3>
+                <canvas id="monthly-breakdown-chart" width="400" height="240"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Suggestions Section -->
+    <div class="container">
+        <div class="ai-suggestions glass-effect">
+            <div class="ai-header">
+                <i class="fas fa-robot"></i>
+                <h3>AI Financial Insights</h3>
+            </div>
+            <div class="ai-content">
+                <!-- Dynamic suggestions will be injected here by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Debug message to check if Chart.js is loaded
+        window.addEventListener('load', function() {
+            console.log('Chart.js loaded:', typeof Chart !== 'undefined');
+        });
+    </script>
+    <script type="module" src="{{ url_for('static', filename='js/home.js') }}"></script>
+    <script>
+        // Load navigation bar
+        fetch('/components/navbar.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('navbar-container').innerHTML = html;
+                // Load navbar.js after the HTML is loaded
+                const script = document.createElement('script');
+                script.type = 'module';
+                script.src = '/components/navbar.js';
+                document.body.appendChild(script);
+            })
+            .catch(error => console.error('Error loading navigation bar:', error));
+    </script>
+</body>
+<footer>
+    <div class="footer glass-effect">
+        <p>&copy; Developed by Navaneeth</p>
+    </div>
+</footer>
+</html>

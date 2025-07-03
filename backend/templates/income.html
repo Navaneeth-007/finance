@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartFin - Income</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/income.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Navigation Bar Container -->
+    <div id="navbar-container"></div>
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Header -->
+        <div class="header glass-effect">
+            <div class="welcome-section">
+                <h1>Income Overview</h1>
+                <p class="subtitle">Track and manage your income sources</p>
+            </div>
+        </div>
+        
+        <!-- Key Stats -->
+        <div class="stats-grid">
+            <div class="stat-card glass-effect">
+                <div class="stat-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Total Income</h3>
+                    <p class="stat-value">₹32,500</p>
+                    <p class="stat-change positive">
+                    </p>
+                </div>
+            </div>
+            <div class="stat-card glass-effect">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Average Monthly</h3>
+                    <p class="stat-value">₹28,750</p>
+                    <p class="stat-change positive">
+                    </p>
+                </div>
+            </div>
+            <div class="stat-card glass-effect">
+                <div class="stat-icon">
+                    <i class="fas fa-piggy-bank"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Savings Rate</h3>
+                    <p class="stat-value">35%</p>
+                    <p class="stat-change positive">
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!--add new income-->
+        <div class="action-buttons glass-effect">
+            <button class="btn btn-primary" id="add-income-btn">
+                <i class="fas fa-plus"></i> Add New Income
+            </button>
+        </div>
+        <!-- Income Overview Graphs Section -->
+        <div class="charts-grid">
+            <div class="chart-container glass-effect">
+                <h3>Income Trend</h3>
+                <canvas id="income-trend-chart" width="400" height="240"></canvas>
+            </div>
+            <div class="chart-container glass-effect">
+                <h3>Source Distribution</h3>
+                <canvas id="source-distribution-chart" width="400" height="240"></canvas>
+            </div>
+        </div>
+        <!-- AI Suggestions Container -->
+        <div class="ai-suggestions-container glass-effect">
+            <div class="ai-suggestions-header">
+                <i class="fas fa-robot text-emerald-500"></i>
+                <h3 class="text-lg font-semibold">AI Income Insights</h3>
+            </div>
+            <div class="ai-suggestions-content">
+                <!-- Dynamic suggestions will be injected here by JS -->
+            </div>
+        </div>
+        <!-- Only keep Add Income button, modal, and income table -->
+        <div class="container">
+            <div class="income-list glass-effect">
+                <div class="income-list-header">
+                    <h2>Recent Income</h2>
+                    <div class="date-filter">
+                        <select id="income-month-select" class="form-control">
+                            <option value="0">January</option>
+                            <option value="1">February</option>
+                            <option value="2">March</option>
+                            <option value="3">April</option>
+                            <option value="4">May</option>
+                            <option value="5">June</option>
+                            <option value="6">July</option>
+                            <option value="7">August</option>
+                            <option value="8">September</option>
+                            <option value="9">October</option>
+                            <option value="10">November</option>
+                            <option value="11">December</option>
+                        </select>
+                        <select id="income-year-select" class="form-control">
+                            <option value="2020">2020</option>
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                        </select>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Source</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="income-table-body">
+                        <!-- Income entries will be added here dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Add Income Modal -->
+        <div id="add-income-modal" class="modal">
+            <div class="modal-content glass-effect">
+                <span class="close-modal">&times;</span>
+                <h2>Add New Income</h2>
+                <form id="income-form">
+                    <div class="form-group">
+                        <label for="income-source">Income Source</label>
+                        <select id="income-source" class="form-control" required>
+                            <option value="">Select Source</option>
+                            <option value="salary">Salary</option>
+                            <option value="business">Business</option>
+                            <option value="freelance">Freelance</option>
+                            <option value="stock">Stock</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="income-description">Description</label>
+                        <input type="text" id="income-description" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="income-amount">Amount</label>
+                        <input type="text" id="income-amount" class="form-control" inputmode="decimal" pattern="[0-9]*" required autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="income-date">Date</label>
+                        <input type="date" id="income-date" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Income</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        fetch('/components/navbar.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('navbar-container').innerHTML = html;
+                // Load navbar.js after the HTML is loaded
+                const script = document.createElement('script');
+                script.type = 'module';
+                script.src = '/components/navbar.js';
+                script.onload = () => {
+                    import('/components/navbar.js').then(module => module.initNavbar());
+                };
+                document.body.appendChild(script);
+            })
+            .catch(error => console.error('Error loading navigation bar:', error));
+
+    </script>
+    <script type="module" src="{{ url_for('static', filename='js/income.js') }}"></script>
+</body>
+<footer>
+    <div class="footer glass-effect">
+        <p>&copy; Developed by Navaneeth</p>
+    </div>
+</footer>
+</html> 

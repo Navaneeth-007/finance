@@ -1,0 +1,40 @@
+/* Sidebar Styles for Admin Pages */
+.sidebar {
+    background: var(--glass-background);
+    backdrop-filter: blur(10px);
+    border-right: 1px solid var(--glass-border);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    min-height: 100vh;
+}
+.sidebar-header { padding: 1rem 0; }
+.brand-logo {
+    display: flex; align-items: center; gap: 0.75rem;
+    font-size: 1.25rem; font-weight: 600; color: var(--primary-color);
+}
+.brand-logo i {
+    font-size: 1.5rem;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.sidebar-nav { display: flex; flex-direction: column; gap: 0.5rem; }
+.nav-item {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.75rem 1rem; color: var(--text-secondary);
+    text-decoration: none; border-radius: 0.5rem; transition: all 0.2s;
+}
+.nav-item:hover { background: var(--background-secondary); color: var(--primary-color); }
+.nav-item.active { background: var(--primary-gradient); color: white; }
+.nav-item i { font-size: 1.1rem; }
+.sidebar-footer { margin-top: auto; }
+.btn, .btn-secondary {
+    width: 100%; padding: 0.75rem 1.5rem; border: none; border-radius: 0.5rem;
+    font-weight: 600; cursor: pointer; background: var(--accent-gradient); color: #fff;
+    box-shadow: 0 2px 8px var(--shadow-color); transition: background 0.18s, color 0.18s, transform 0.15s;
+    display: flex; align-items: center; gap: 0.7rem; font-size: 1.08rem;
+}
+.btn-secondary:hover { background: var(--primary-gradient); color: #fff; transform: scale(1.04); } 

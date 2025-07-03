@@ -1,0 +1,25 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+<aside class="sidebar glass-effect">
+    <div class="sidebar-header">
+        <div class="brand-logo">
+            <i class="fas fa-user-shield"></i>
+            <span>SmartFin Admin</span>
+        </div>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="../dashboard/dashboard.html" class="nav-item" id="nav-users">
+            <i class="fas fa-users"></i>
+            <span>User Management</span>
+        </a>
+        <a href="../ai-status/aistatus.html" class="nav-item" id="nav-ai">
+            <i class="fas fa-robot"></i>
+            <span>AI Status</span>
+        </a>
+    </nav>
+    <div class="sidebar-footer">
+        <button id="logoutBtn" class="btn btn-secondary w-100">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+        </button>
+    </div>
+</aside> 

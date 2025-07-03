@@ -1,0 +1,54 @@
+<!-- Navigation Bar Component -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+
+<nav class="navbar">
+    <div class="nav-container">
+        <!-- Left: Logo & Links -->
+        <div class="nav-left">
+            <a href="/home/home.html" class="logo">
+                <i class="fas fa-wallet"></i>
+                <span>SmartFin</span>
+            </a>
+            <div class="nav-links">
+                <a href="/home/home.html" class="nav-link" data-page="home">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="/expense/expense.html" class="nav-link" data-page="expense">
+                    <i class="fas fa-receipt"></i>
+                    <span>Expenses</span>
+                </a>
+                <a href="/income/income.html" class="nav-link" data-page="income">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span>Income</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Right: Notifications & Profile Button -->
+        <div class="nav-right">
+            <!-- Notifications -->
+            <div class="notification-container">
+                <button class="notification-button" aria-label="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">0</span>
+                </button>
+                <div class="notification-dropdown">
+                    <div class="notification-header">
+                        <h3>Notifications</h3>
+                        <button class="mark-all-read">Mark all as read</button>
+                    </div>
+                    <div class="notification-list">
+                        <!-- Notifications will be injected here by navbar.js -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Nav Button -->
+            <a href="/profile/profile.html" style="text-decoration: none;" class="profile-nav-btn" id="profile-nav-btn">
+                <i class="fas fa-user"></i>
+                <span class="profile-name">Profile</span>
+            </a>
+        </div>
+    </div>
+</nav>
