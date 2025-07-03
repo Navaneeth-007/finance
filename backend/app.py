@@ -5,6 +5,8 @@ from bson import ObjectId
 from datetime import datetime
 import firebase_admin
 from firebase_admin import credentials, auth
+import os
+import json
 
 # --- CONFIG ---
 MONGO_URI = 'mongodb+srv://navaneeth007:navaneeth007@cluster0.yfkkdys.mongodb.net/?tlsAllowInvalidCertificates=true'
@@ -45,7 +47,11 @@ def serialize_txn(txn):
 
 # --- FIREBASE ADMIN INITIALIZATION ---
 if not firebase_admin._apps:
-    cred = credentials.Certificate('serviceAccountKey.json')  # Adjust path if needed
+    if 'GOOGLE_APPLICATION_CREDENTIALS_JSON' in os.environ:
+        service_account_info = json.loads(os.environ['GOOGLE_APPLICATION_CREDENTIALS_JSON'])
+        cred = credentials.Certificate(service_account_info)
+    else:
+        cred = credentials.Certificate('serviceAccountKey.json')  # Local fallback
     firebase_admin.initialize_app(cred)
 
 # --- API ENDPOINTS ---
